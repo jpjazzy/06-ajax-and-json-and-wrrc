@@ -84,8 +84,7 @@
     <script src="scripts/article.js"></script>
     <script src="scripts/articleView.js"></script>
     <script>
-      Article.fetchAll();  
-    </script>
+      Article.fetchAll();  //we use this now since it will no call the fetchAll function and then it will then call the initIndexPage function if there is no localStorage. if there is local. it just loads the last info. if that last data has changed from the new data we did with the AJAX, then it clears it and re gets the data with the else part.
 
     </script>
   </body>
