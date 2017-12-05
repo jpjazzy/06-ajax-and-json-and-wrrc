@@ -51,7 +51,7 @@ Article.fetchAll = () => {
     $.getJSON('data/hackerIpsum.json', function (data) {
       localStorage.rawData = JSON.stringify(data);
     });
-    console.log('this is the data stringified', localStorage.rawData);
+    //console.log('this is the data stringified', localStorage.rawData);
     Article.loadAll(JSON.parse(localStorage.rawData));
   }
 }
