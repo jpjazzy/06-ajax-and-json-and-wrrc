@@ -45,15 +45,28 @@ Article.fetchAll = () => {
   // REVIEWED: What is this 'if' statement checking for? Where was the rawData set to local storage?
 
   if (localStorage.rawData) {
-    console.log('this is the localstorage data', localStorage.data);
-    Article.loadAll(JSON.parse(localStorage.rawData));
 
+    $.ajax({
+      url : 'data/hackerIpsum.json',
+      type : 'HEAD',
+      success : function(data, message, xhr) {
+        if (localStorage.currentETag === xhr.getResponseHeader('ETag')) {
+          Article.loadAll(JSON.parse(localStorage.rawData));
+        } else {
+          localStorage.clear();
+          Article.fetchAll();
+        }
+      }
+    });
   } else {
     // If localStorage does not have any items in it, it will pull the data from the DATA file. then set the data to localStorage but it will stringify it. after that it will then call the loadAll function and PARSE it to be readable. then we call the initIndexPage to load the article on the page.
     $.getJSON('data/hackerIpsum.json', function (data) {
       localStorage.setItem('rawData', JSON.stringify(data));
       Article.loadAll(JSON.parse(localStorage.rawData));
       articleView.initIndexPage();
+    }, function(data, message, xhr) {
+      // success function to grab ETag.
+      localStorage.setItem('currentETag', xhr.getResponseHeader('ETag'));
     });
   }
 }
